@@ -1,0 +1,3 @@
+please,1000
+Molly,600
+coffee,1200

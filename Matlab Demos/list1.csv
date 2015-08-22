@@ -1,0 +1,7 @@
+TRIAL_ID,SOUNDFILE,ISFILLER,DISCSTATUS,ACCENT,PORT1_IMG,PORT2_IMG,PORT3_IMG,PORT4_IMG,PORT1_COND,PORT2_COND,PORT3_COND,PORT4_COND,DROP_LOC
+TrialA,tank-acc.wav,1,Given,Accented,armyvan.gif,empty,chair.jpg,hippo-big.gif,T,x,D,D,2
+TrialB,clown-deacc.wav,0,Given,Deaccented,clown.jpg,dog.gif,empty,cloud.gif,T,D,x,C,3
+TrialC,penguin-acc.wav,0,Given,Accented,empty,pencil.gif,axe.gif,penguin.gif,x,D,C,T,1
+TrialD,airplane-deacc.wav,0,New,Deaccented,arrow.gif,rabbit-bw.jpg,airplane.jpg,empty,C,D,T,x,4
+TrialE,camel-acc.wav,0,New,Accented,camel.gif,dinosaur.gif,empty,candle.png,T,D,x,C,3
+TrialF,rose-acc.wav,1,na,Accented,rose-bw.gif,empty,globe.jpg,muppet.gif,T,x,D,D,2
