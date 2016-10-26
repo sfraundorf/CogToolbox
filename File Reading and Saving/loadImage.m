@@ -38,8 +38,10 @@
 %                           Tuan Lam for help with this!
 % 08.24.12 - S.Fraundorf - updated error messages
 % 10.13.12 - S.Fraundorf - supports more grayscale image formats
+% 10.26.16 - S.Fraundorf - fixed some issues with polarity check (in newer
+%                           versions of MATLAB?)
 
-function [imagewindow rect] = loadImage(mainwindow, filename, winsize, rescale, bgcolor)
+function [imagewindow, rect] = loadImage(mainwindow, filename, winsize, rescale, bgcolor)
 
 %% check the input parameters
 if nargin > 2
@@ -57,7 +59,7 @@ end
 % unused because Matlab can detect this automatically OK
 
 %% open the image file from disk
-[ourimage map alpha] = imread(filename);
+[ourimage, map, alpha] = imread(filename);
 
 %% calculate image size
 imagesize = size(ourimage);
@@ -66,7 +68,7 @@ imagesize = size(ourimage);
 if ndims(ourimage) < 3 || imagesize(3) < 3 % black & white or grayscale, convert to RGB color  
         
     % kludge-y check of the color map to make sure we get the polarity right
-    if exist('map','var') && ~isempty(map) && map(1,:) == [1 1 1] % need to reverse the colors
+    if exist('map','var') && ~isempty(map) && map(1,1) == 1 && map(1,2) == 1 && map(1,3) == 1 % need to reverse the colors
         ourimage(:,:) = 1-ourimage(:,:);
     end
    
