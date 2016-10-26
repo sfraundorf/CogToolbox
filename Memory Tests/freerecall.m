@@ -35,6 +35,7 @@
 %                          Mac)
 % 06.16.11 - S.Fraundorf - now accepts TAB key to move between fields
 %                         (which participants often want to use)
+% 10.26.16 - S.Fraundorf - use textures
 
 function varargout = freerecall(mainwindow, minitems, maxitems, fgcolor, bgcolor, instructions, outputtype, subno, outputfolder)
 
@@ -118,9 +119,12 @@ for i=1:maxitems
         WriteLine(FreeRecallWindow, 'When you have finished, type DONE into one of the boxes and press Enter.', fgcolor, 25, 25, rect(4)-(TextSize*2.5));
      end
         
-    % show current window
-    Screen('CopyWindow',FreeRecallWindow,mainwindow,rect,rect);
-    Screen('Flip',mainwindow,0,1);
+    % turn this into a texture and display
+    imageMatrix=Screen('GetImage', FreeRecallWindow);
+    FreeRecallTexture = Screen('MakeTexture', mainwindow, imageMatrix);
+    clear imageMatrix    
+    Screen('DrawTexture',mainwindow, FreeRecallTexture);
+    Screen('Flip',mainwindow,0,1);    
     
     % test the next item
     x=responseboxes{i}(1);
@@ -143,6 +147,7 @@ for i=1:maxitems
             varargout{2}(i,1:2) = [startRT endRT];
         end
     end
+    Screen('Close', FreeRecallTexture);
         
 end
 

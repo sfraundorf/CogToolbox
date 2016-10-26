@@ -52,6 +52,7 @@ function [string,startRT,endRT] = GetEchoStringCuedT4(window,msg,x,y,cueColor,bg
 %                             response.  useful for doing this >1 time on a
 %                             screen
 %    09.21.11 - S.Fraundorf - fixed default setting not terminated with a ;
+%    10.26.16 - S.Fraundorf - use textures
 
 %% SET DEFAULT ARGUMENTS
 if nargin < 11
@@ -81,15 +82,22 @@ ListenChar(2);
 string='';
 respondedyet=false; % this tracks whether or not they've hit a key yet
 
+rect = Screen('Rect',window); % get screen size
 TextSize = Screen('TextSize', window);
 TextFont = Screen('TextFont', window);
 
 origwin = CreateOffWin(window, bgColor, TextFont, TextSize);
 respwin = CreateOffWin(window, bgColor, TextFont, TextSize);
-Screen('CopyWindow', window,origwin);
-Screen('CopyWindow', window,respwin);
+
+% save the stuff on the screen at the time we started
+imageMatrix=Screen('GetImage', window);
+origTexture = Screen('MakeTexture', window, imageMatrix);
+clear imageMatrix
 
 %% DRAW THE CUE & RESPONSE AREA
+
+% start with the original display
+Screen('DrawTexture',respwin, origTexture, [], rect);
 
 % write the cue
 WriteRight(respwin, msg, x, y, cueColor);
@@ -109,8 +117,11 @@ end
 % everytime the screen is updated
 
 % show this stuff
-Screen('CopyWindow',respwin,window);
-Screen('Flip',window,0);
+imageMatrix=Screen('GetImage', respwin);
+respTexture = Screen('MakeTexture', window, imageMatrix);
+clear imageMatrix    
+Screen('DrawTexture',window, respTexture, [], rect);
+Screen('Flip',window);
 
 %% GET THE RESPONSE
 FlushEvents('keyDown', 'mouseDown'); % clears anything the user has typed before the display appears
@@ -118,10 +129,10 @@ t1=GetSecs; % start timing
 
 while 1	% Loop until <return> or <enter>
     
-    % show the current string
-    Screen('CopyWindow',respwin,window);
-    WriteLeft(window, string, x, y, respColor);
-    Screen('Flip', window, 0);
+    % show the current string    
+    Screen('DrawTexture', window, respTexture, [], rect); % display
+    WriteLeft(window, string, x, y, respColor); % string
+    Screen('Flip', window);
 
     mychar=GetChar(0); % the 0 speeds up this call
 
@@ -172,8 +183,8 @@ end % get a new keypress
 
 if ghost % ghost the display afterwards
     
-    % restore the original screen
-    Screen('CopyWindow',origwin,window);
+    % restore the original screen         
+    Screen('DrawTexture',window, origTexture, [], rect);    
 
     % ghosted cue
     ghostColor = floor((cueColor + bgColor) / 2);
@@ -193,9 +204,10 @@ if ghost % ghost the display afterwards
     
 end
 
-
 %% WRAP UP
 Screen('Close',origwin);
 Screen('Close',respwin);
+Screen('Close',origTexture);
+Screen('Close',respTexture);
 
 ListenChar; % turn character listening back on
