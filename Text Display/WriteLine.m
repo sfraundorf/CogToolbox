@@ -69,26 +69,37 @@
 % 08.24.12 S.Fraundorf - fixed a bug where, if no highlighted words were
 %                          requested, punctuation marks would be
 %                          highlighted.
+% 11.04.16 S.Fraundorf - added ability to set yPositionIsBaseline - needed
+%                          to display text properly on some systems
 
-function [x y textend]=WriteLine(win, text, color, margin, x, y, linespacing, highlightcolor, highlightwords)
+function [x, y, textend]=WriteLine(win, text, color, margin, x, y, linespacing, highlightcolor, highlightwords, yPositionIsBaseline)
 
 delimiters = [9 10 13 32];
 
 % default parameters
-if nargin < 9
-    usehighlight = false;
-    if nargin < 8
-       highlightcolor = [255 0 0]; % bright red
-       if nargin < 7
-          linespacing = 1;
-       end
+if nargin < 10       
+    % get the default if not specified
+    yPositionIsBaseline = Screen('Preference', 'DefaultTextYPositionIsBaseline');    
+    if nargin < 9  
+        highlightwords = {};
+        if nargin < 8
+            highlightcolor = [255 0 0]; % bright red
+            if nargin < 7
+                linespacing = 1;
+            end
+        end     
     end
+end 
+
+% do any highlighting?
+if nargin < 9 || isempty(highlightwords) 
+    usehighlight = false;
 else
     usehighlight = true;
     % if a single word to highlight, convert to cell array
     if ischar(highlightwords)
-       highlightwords = {highlightwords};
-    end        
+        highlightwords = {highlightwords};
+    end      
 end
 
 % get screen & text parameters
@@ -180,9 +191,9 @@ for i=1:numel(paragraphs)
           end
           % draw the text
           if textend(1) <= rect(3)- margin
-            [x y]=Screen('DrawText',win,[nextWord ' '],x, y, writecolor);
+            [x, y]=Screen('DrawText',win,[nextWord ' '],x, y, writecolor, [], yPositionIsBaseline);
           else
-            [x y]=Screen('DrawText',win,[nextWord ' '],margin, y+floor(size*linespacing), writecolor);
+            [x, y]=Screen('DrawText',win,[nextWord ' '],margin, y+floor(size*linespacing), writecolor, [], yPositionIsBaseline);
           end
       end
       
