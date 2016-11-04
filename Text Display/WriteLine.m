@@ -1,5 +1,5 @@
 %
-%      [newx, newy, textend]=WriteLine(win, text, color, margin, x, y, linespacing, highlightcolor, highlightwords)
+%      [newx, newy, textend]=WriteLine(win, text, color, margin, x, y, linespacing, highlightcolor, highlightwords, yPositionIsBaseline)
 %
 % function writes a string TEXT to position x,y on screen WIN in color
 % COLOR starting at the current cursor position.  If TEXT goes beyond the

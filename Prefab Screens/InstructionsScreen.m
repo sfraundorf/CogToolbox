@@ -1,4 +1,4 @@
-% InstructionsScreen(win, fgcolor, bgcolor, instructions, highlightwords, highlightcolor, click)
+% InstructionsScreen(win, fgcolor, bgcolor, instructions, highlightwords, highlightcolor, click, yPositionIsBaseline)
 %
 % Display a pre-fab instruction screen on window WIN.  The screen includes
 % string INSTRUCTIONS (mark paragraphs with a pipe | ) written in FGCOLOR
