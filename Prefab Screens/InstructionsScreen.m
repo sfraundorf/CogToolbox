@@ -37,16 +37,22 @@
 % 07.14.11 - S.Fraundorf, M.Lewis - allow click = -1
 % 08.23.12 - S.Fraundorf - updated to reflect merger of WriteLine and
 %                            WriteLineHighlight
+% 11.04.16 S.Fraundorf - added ability to set yPositionIsBaseline - needed
+%                          to display text properly on some systems
 
-function InstructionsScreen(win, fgcolor, bgcolor, instructions, highlightwords, highlightcolor, click)
+function InstructionsScreen(win, fgcolor, bgcolor, instructions, highlightwords, highlightcolor, click, yPositionIsBaseline)
 
-if nargin < 7
-    click = 0; % default is keypress
-    if nargin == 5
-        % asked for highlighted words but didn't specify color
-        warning('CogToolbox:InstructionsScreen:NoHighlightColor', ...
-            'Requested highlighted words but highlight color not specified; defaulting to red.');
-        highlightcolor = [255 0 0]; 
+if nargin < 8 
+   % get the default if not specified
+    yPositionIsBaseline = Screen('Preference', 'DefaultTextYPositionIsBaseline');    
+    if nargin < 7
+        click = 0; % default is keypress
+        if nargin == 5
+            % asked for highlighted words but didn't specify color
+            warning('CogToolbox:InstructionsScreen:NoHighlightColor', ...
+                'Requested highlighted words but highlight color not specified; defaulting to red.');
+            highlightcolor = [255 0 0]; 
+        end
     end
 end
 
@@ -61,11 +67,11 @@ rect=Screen('Rect', win);
 % 1) write the instructions
 FilledRect(win,bgcolor,rect);
 if nargin > 4 && ~isempty(highlightwords)
-    % display w/ highlighted words
-    [junk y] = WriteLine(win, instructions, fgcolor, 30, 30,(TextSize*2), linespacing, highlightcolor, highlightwords);
+    % display w/ highlighted words   
+    [~, y] = WriteLine(win, instructions, fgcolor, 30, 30,(TextSize*2), linespacing, highlightcolor, highlightwords, yPositionIsBaseline);
 else
     % no words to highlight
-    [junk y] = WriteLine(win,instructions,fgcolor,30,30,(TextSize*2),linespacing);
+    [~, y] = WriteLine(win,instructions,fgcolor,30,30,(TextSize*2),linespacing, [], [], yPositionIsBaseline);
 end
 
 % 2A) return immediately if click < 0
