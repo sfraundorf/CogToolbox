@@ -86,9 +86,9 @@ WaitSecs(timeperpara*numparas);
 
 % 3) display message on how to continue
 if click == 1
-    WriteLine(win,'Click the mouse to continue.',fgcolor,30,30,y+(TextSize*linespacing*2),linespacing);
+    WriteLine(win,'Click the mouse to continue.',fgcolor,30,30,y+(TextSize*linespacing*2),linespacing, [], [], yPositionIsBaseline);
 else
-    WriteLine(win,'Press a key to continue.',fgcolor,30,30,y+(TextSize*linespacing*2),linespacing);
+    WriteLine(win,'Press a key to continue.',fgcolor,30,30,y+(TextSize*linespacing*2),linespacing, [], [], yPositionIsBaseline);
 end
 Screen('Flip', win);
 
