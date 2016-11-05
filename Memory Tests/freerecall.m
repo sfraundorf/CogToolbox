@@ -1,7 +1,7 @@
 % freerecall(mainwindow, minitems, maxitems, fgcolor, bgcolor,
-%                         instructions, outputtype,subno,outputfolder)
+%                         instructions, outputtype,subno,outputfolder, yPositionIsBaseline)
 % recalledwords RTs = freerecall(mainwindow, minitems, maxitems, fgcolor,
-%                        bgcolor, instructions, outputtype,subno,outputfolder)
+%                        bgcolor, instructions, outputtype,subno,outputfolder, yPositionIsBaseline)
 %
 % Executes a free recall test on window MAINWINDOW, allowing the user to
 % enter up to MAXITEMS one at a time.  The test can be aborted early by
@@ -36,15 +36,20 @@
 % 06.16.11 - S.Fraundorf - now accepts TAB key to move between fields
 %                         (which participants often want to use)
 % 10.26.16 - S.Fraundorf - use textures
+% 11.04.16 - S.Fraundorf - add yPositionIsBaseline setting
 
-function varargout = freerecall(mainwindow, minitems, maxitems, fgcolor, bgcolor, instructions, outputtype, subno, outputfolder)
+function varargout = freerecall(mainwindow, minitems, maxitems, fgcolor, bgcolor, instructions, outputtype, subno, outputfolder, yPositionIsBaseline)
 
 %% --SETUP--
 % define colors
 ghosted = floor((bgcolor+fgcolor) .* 0.5);
 
-if nargin < 7 % default is to save to disk
-    outputtype = 0;
+if nargin < 10
+    % get the default if not specified
+    yPositionIsBaseline = Screen('Preference', 'DefaultTextYPositionIsBaseline');    
+    if nargin < 7 % default is to save to disk
+        outputtype = 0;
+    end
 end
 
 % output file folder
@@ -81,10 +86,11 @@ xoffset = floor(boxwidth / numcolumns); % horizontal spacing
 yoffset = floor(boxheight / rowspercolumn); % vertical spacing
 
 % write the instructions
-[junk, instructheight] = WriteLine(FreeRecallWindow, instructions, fgcolor, 20, 30, TextSize*2);
+[~, instructheight] = WriteLine(FreeRecallWindow, instructions, fgcolor, 20, 30, TextSize*2, [], [], [], yPositionIsBaseline);
 
 % set up the boxes
 responseboxes={};
+bottomboxedge = 0;
 for colnum = 1:numcolumns
     xcoord = ((colnum-1)*boxwidth) + (colnum * xoffset);
     for rownum = 1: rowspercolumn
@@ -93,6 +99,10 @@ for colnum = 1:numcolumns
             Screen('FrameRect', FreeRecallWindow, ghosted, [xcoord ycoord xcoord+boxwidth ycoord+boxheight]);
             responseboxes=[responseboxes [xcoord ycoord xcoord+boxwidth ycoord+boxheight]];
         end
+    end
+    % track the y-position of the bottom of this column
+    if ycoord+boxheight > bottomboxedge
+        bottomboxedge = ycoord+boxheight;
     end
 end
         
@@ -116,7 +126,14 @@ end
 for i=1:maxitems
     
      if i==minitems+1 % after user has typed in at least MINITEMS words, tell them how they can quit
-        WriteLine(FreeRecallWindow, 'When you have finished, type DONE into one of the boxes and press Enter.', fgcolor, 25, 25, rect(4)-(TextSize*2.5));
+        % text is displayed 1 line below the bottom box
+        if yPositionIsBaseline
+            doney = bottomboxedge+(TextSize*2);
+        else
+            doney = bottomboxedge+(TextSize*1);
+        end
+        WriteLine(FreeRecallWindow, 'When you have finished, type DONE into one of the boxes and press Enter.', ...
+            fgcolor, 25, 25, doney, [], [], [], yPositionIsBaseline);
      end
         
     % turn this into a texture and display
