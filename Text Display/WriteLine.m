@@ -83,10 +83,7 @@ if nargin < 10
     if nargin < 9  
         highlightwords = {};
         if nargin < 8
-            highlightcolor = [255 0 0]; % bright red
-            if nargin < 7
-                linespacing = 1;
-            end
+            highlightcolor = [255 0 0]; % bright red            
         end     
     end
 end 
@@ -100,6 +97,11 @@ else
     if ischar(highlightwords)
         highlightwords = {highlightwords};
     end      
+end
+
+% default line spacing
+if nargin < 7 || isempty(linespacing)
+    linespacing = 1;
 end
 
 % get screen & text parameters
