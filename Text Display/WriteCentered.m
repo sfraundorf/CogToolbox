@@ -1,6 +1,6 @@
-function WriteCentered(win, text, x, y, color, margin, linespacing)
+function WriteCentered(win, text, x, y, color, margin, linespacing, yPositionIsBaseline)
 % 
-%      WriteCentered(win, text, x, y, color, margin, linespacing)
+%      WriteCentered(win, text, x, y, color, margin, linespacing, yPositionIsBaseline)
 % 
 % function writes a string TEXT to screen WIN in color COLOR.  The center
 % of the TEXT occurs at postion X and Y.
@@ -21,13 +21,19 @@ function WriteCentered(win, text, x, y, color, margin, linespacing)
 % 02.23.10 S.Fraundorf - fixed a bug with really long text strings
 % 07.16.11 S.Fraundorf - return w/out crashing if no text to display
 % 07.18.11 S.Fraundorf - fixed goof in the above change
+% 01.18.17 S.Fraundorf - added ability to set yPositionIsBaseline - needed
+%                          to display text properly on some systems
 
 % set default parameters if needed
-if nargin < 7
-    linespacing = 1;
-    if nargin < 6
-        margin = 0;
-    end
+if nargin < 8
+	% get the default if not specified
+    yPositionIsBaseline = Screen('Preference', 'DefaultTextYPositionIsBaseline');    
+	if nargin < 7
+    	linespacing = 1;
+	    if nargin < 6
+    	    margin = 0;
+	    end
+	end
 end
 
 % find out the margins
@@ -71,5 +77,5 @@ top = y-round(totalheight/2); % top of the text block
 % draw the text
 for i=1:numel(textlines)
     norm=Screen('TextBounds',win,textlines{i});
-    Screen('DrawText',win,textlines{i},round(x-norm(3)/2), top+(textsize*(i-1))+(linespacing*textsize*(i-1)), color);
+    Screen('DrawText',win,textlines{i},round(x-norm(3)/2), top+(textsize*(i-1))+(linespacing*textsize*(i-1)), color, [], yPositionIsBaseline);
 end
