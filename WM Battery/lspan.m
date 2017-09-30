@@ -151,7 +151,7 @@ fprintf(outfile,'TFRESP,TFACC,TIMEOUT,TBRLETTER,TYPED,RECALLED,TFTIME,MAXTIME\n'
 
 %% -- SHOW INITIAL INSTRUCTIONS --
 
-sentence = wavread([soundfilefolder 'finger.wav']);
+sentence = audioread([soundfilefolder 'finger.wav']);
 PsychPortAudio('FillBuffer', pahandle, sentence');
 
 blurb = ['In this task, you will hear sentences over the computer speakers and decide whether or not they are true statements.|'...
@@ -177,7 +177,7 @@ else
     blurb = 'In this case, you should have pressed K for NO.  A finger is not where you wear your shoe, so the sentence is NOT true.';
 end
 blurb = [blurb '| Does that make sense?  Let''s try one more.'];
-sentence = wavread([soundfilefolder 'lettuce.wav']);
+sentence = audioread([soundfilefolder 'lettuce.wav']);
 PsychPortAudio('FillBuffer', pahandle, sentence');
 InstructionsScreen(mainwindow,fgcolor,bgcolor,blurb);
 
@@ -247,9 +247,9 @@ for blocknum = blockorder
     for item = 1:blocksize
         
         % load the sentence & letter files, put the former in the buffer
-        sentence = wavread([soundfilefolder blocks{blocknum}{MEMWORD}{item} '.wav']);
+        sentence = audioread([soundfilefolder blocks{blocknum}{MEMWORD}{item} '.wav']);
         if ~calibration
-           letterwav = wavread([soundfilefolder TBR(item) '.wav']);
+           letterwav = audioread([soundfilefolder TBR(item) '.wav']);
         end
         PsychPortAudio('FillBuffer', pahandle, sentence');
         
@@ -398,7 +398,7 @@ for blocknum = blockorder
             'in addition to judging the sentences.|' ...
             'After a few sentences, we will ask you to <b>type in the letters you just heard, in the order you heard them</b> .|' ...
             'On the next screen, we will play you an example letter.'];
-        letterwav = wavread([soundfilefolder 'r.wav']);
+        letterwav = audioread([soundfilefolder 'r.wav']);
         PsychPortAudio('FillBuffer', pahandle, letterwav');
         InstructionsScreen(mainwindow,fgcolor,bgcolor,blurb);
         

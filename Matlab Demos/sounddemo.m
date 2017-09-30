@@ -33,7 +33,7 @@ if demoplaying == 1
 % FREQUENCY with which they were sampled in order to play them back at the
 % correct speed.
 
-[audiofortrial freq] = wavread('test-scott.wav');
+[audiofortrial freq] = audioread('test-scott.wav');
 % read a WAV file off the disk and put it in the matrix "audiofortrial"
 %
 % the frequency is stored in FREQ.  (in Hz - cycles per second)
@@ -59,7 +59,7 @@ audiochannel = PsychPortAudio('Open', [], 1, [], freq, numchannels);
 % the channel stays open, so we can put different audio into it at
 % different points in the experiment
 PsychPortAudio('FillBuffer', audiochannel, audiofortrial');
-% for some reason, WAVREAD reads sound files as a vertical vector, but
+% for some reason, audioread reads sound files as a vertical vector, but
 % PsychPortAudio wants them as a horizontal vector.  so we need to ROTATE
 % our sound vector.  the notation for this is the same as you'd use on
 % paper: a ' after the name of the vector
@@ -83,7 +83,7 @@ PsychPortAudio('Stop',audiochannel,1);
 fprintf('We will not see this until the sound is done.\n');
 
 % load up a new 2nd sound
-[audiofortrial freq] = wavread('test-molly.wav');
+[audiofortrial freq] = audioread('test-molly.wav');
 PsychPortAudio('FillBuffer', audiochannel, audiofortrial');
 
 PsychPortAudio('Start',audiochannel,0);

@@ -29,6 +29,7 @@
 %                         default file
 % 06.22.11 S.Fraundorf - doesn't restore hidden cursor if you are using a
 %                         keypress
+% 09.30.15 S.Fraundorf - use audioread for current versions of MATLAB
 
 function AdjustVolume(window, fgcolor, bgcolor, usekeypress, soundfile)
 
@@ -37,7 +38,7 @@ function AdjustVolume(window, fgcolor, bgcolor, usekeypress, soundfile)
 textlinespacing = 1.25; % increase spacing between lines
 
 if nargin < 5
-    soundfile = 'AdjustVolume';
+    soundfile = 'AdjustVolume.wav';
     if nargin < 4
       usekeypress = 0;
       if nargin < 3
@@ -88,7 +89,7 @@ end
 
 %% SET UP SOUND
 % read the sound file
-[soundtoplay, Fs] = wavread(soundfile);
+[soundtoplay, Fs] = audioread(soundfile);
  wavedata = soundtoplay';
  nrchannels = size(wavedata,1); % Number of rows == number of channels.
 

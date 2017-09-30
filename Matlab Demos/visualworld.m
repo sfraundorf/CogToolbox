@@ -379,7 +379,7 @@ InitializePsychSound;
 if SOUNDFREQ == 0
     
     % Check on the frequency by opening up an audio file from trial 1
-    [garbage,SOUNDFREQ] = wavread([sound_dir trialdata{SOUNDFILE}{1}]);
+    [garbage,SOUNDFREQ] = audioread([sound_dir trialdata{SOUNDFILE}{1}]);
     clear garbage; % no need to save the acutal audio itself
     
     % Display a message to the user about what we did (and how to avoid
@@ -395,7 +395,7 @@ end
 if SOUNDCHANNELS == 0
 
     % Check on the # of channels by opening up an audio file from trial 1
-    garbage = wavread([sound_dir trialdata{SOUNDFILE}{1}]);
+    garbage = audioread([sound_dir trialdata{SOUNDFILE}{1}]);
     SOUNDCHANNELS = size(garbage,2); % 2nd dimension is # of channels
     clear garbage; % no need to keep the actual audio itself
     
@@ -672,7 +672,7 @@ for trialnum=trialorder
                                        
     %% READY THE AUDITORY STIMULUS   
     % Read in the file:
-    stimulussound = wavread([sound_dir trialdata{SOUNDFILE}{trialnum}]);
+    stimulussound = audioread([sound_dir trialdata{SOUNDFILE}{trialnum}]);
     stimulussound = stimulussound';
     % The second line TRANSPOSES the sound file so it's a row vector rather
     % than a column vector.  Psychophysics Toolbox expects the sounds as a row

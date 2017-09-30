@@ -126,7 +126,7 @@ for i=1:numtrials % always in the same order
     end
         
     % load the audio for the trial
-    audiofortrial = wavread(trialdata{STIMULUS}{i});
+    audiofortrial = audioread(trialdata{STIMULUS}{i});
     if isempty(audiofortrial)
         fprintf('empty\n');
     end

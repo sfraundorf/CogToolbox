@@ -186,7 +186,7 @@ for blocknum=1:2
         Screen('Flip',mainwindow,0);
         
         % load & buffer the sound
-        audiofortrial = wavread([soundfilefolder pracblocks{blocknum}{FILENAMES}{iteminlist}]);
+        audiofortrial = audioread([soundfilefolder pracblocks{blocknum}{FILENAMES}{iteminlist}]);
         PsychPortAudio('FillBuffer', pahandle, audiofortrial');
         
         % play it and wait it for finish
@@ -311,7 +311,7 @@ for blocknum=blockorder
         Screen('Flip',mainwindow,0);
         
         % load & buffer the sound
-        audiofortrial = wavread([soundfilefolder blocks{blocknum}{FILENAMES}{iteminlist}]);
+        audiofortrial = audioread([soundfilefolder blocks{blocknum}{FILENAMES}{iteminlist}]);
         PsychPortAudio('FillBuffer', pahandle, audiofortrial');
         
         % play it and wait it for finish
