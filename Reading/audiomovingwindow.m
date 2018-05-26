@@ -1,6 +1,6 @@
-% [RTs, regiontime, regionwidth, y] = ...
+% [RTs, regions, regiontime, regionwidth, y] = ...
 %   audiomovingwindow(mainwindow, fgcolor, bgcolor, soundfiles, ...
-%                     textstimulus,centerMultipleLines, dontclear, latency)
+%                     textstimulus,centerMultipleLines, font, dontclear, latency)
 %
 % Performs a self-paced auditory moving window reading task on window
 % MAINWINDOW with text color FGCOLOR on background color BGCOLOR.
@@ -57,9 +57,10 @@
 %
 % The function returns a VECTOR of RTs -- one response time per region.
 %
-% Optionally, the function also returns vectors of REGION TIMES (in
-% seconds) and REGION WIDTHS (in # of pixels).  These can be used to conver
-% convert your listening times to RESIDUAL listening times at the end of your
+% Optionally, the function also returns the text of the REGIONS, as well as
+% vectors of REGION TIMES (in seconds), REGIONS (the text), and REGION
+% WIDTHS (in # of pixels).  These can be used to conver convert your
+% listening times to RESIDUAL listening times at the end of your
 % experiment, using the ResidReading function.  Type:
 %   help ResidReading
 % for more information.
@@ -73,7 +74,7 @@
 %
 % 04.03.18 - initial version
 
-function [RTs, regiontime, regionwidth, y] = ...
+function [RTs, regions, regiontime, regionwidth, y] = ...
     audiomovingwindow(mainwindow, fgcolor, bgcolor, soundfiles, textstimulus, centerMultipleLines, font, dontclear, latency)
 
 
@@ -112,10 +113,10 @@ else
     displaytext = true;
 end
 
-if nargout >= 2
+if nargout > 2
     % user has REGION LENGTHS requested
     reportTime = true;
-    if nargout >= 3
+    if nargout > 3
         % and PIXEL WIDTHS
         reportWidth=true;
     else
@@ -178,7 +179,7 @@ if displaytext
         % if region boundaries have SPACES around them, remove them  so we don't
         % create extra space
         textstimulus = strrep(textstimulus, ' | ', '|');
-
+        
         regions = textscan(textstimulus, '%s', 'Delimiter', '|');
     else
         % NO pipes found, use spaces instead
