@@ -1,4 +1,4 @@
-% AdjustVolume(window, fgcolor, bgcolor, usekeypress, soundfile)
+% AdjustVolume(window, fgcolor, bgcolor, usekeypress, soundfile, yPositionIsBaseline)
 %
 % Presents a screen on window WINDOW that allows the user to listen to
 % a test sound and adjust the volume.  The screen has background color
@@ -30,8 +30,10 @@
 % 06.22.11 S.Fraundorf - doesn't restore hidden cursor if you are using a
 %                         keypress
 % 09.30.15 S.Fraundorf - use audioread for current versions of MATLAB
+% 05.26.18 S.Fraundorf - added ability to set yPositionIsBaseline - needed
+%                          to display text properly on some systems
 
-function AdjustVolume(window, fgcolor, bgcolor, usekeypress, soundfile)
+function AdjustVolume(window, fgcolor, bgcolor, usekeypress, soundfile, yPositionIsBaseline)
 
 %% DEFAULTS
 
