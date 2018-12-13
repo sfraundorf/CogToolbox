@@ -108,7 +108,7 @@ trialdata = textscan(infile, '%s%d', 'Delimiter', ',');
 % the %s and %ds work the same as printing TO a file (see below)
 % 'Delimiter', ',' tells MATLAB the file is comma-delimited
 
-% assign column numbers to variable names so we can remmeber them later
+% assign column numbers to variable names so we can remember them later
 MAGICWORDS = 1;
 MAXTIME = 2;
 
