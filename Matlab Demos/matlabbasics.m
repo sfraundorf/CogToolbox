@@ -165,7 +165,7 @@ for trialnum=trialorder % you can also do FOR loops through any arbitrary vector
 % in this case, until the guess is the same as the magicword
   while ~strcmp(guess, trialdata{MAGICWORDS}{trialnum}) % use strcmp not = to compare strings
                                 % ~ is the NOT operator
-                                % so DO this WHILE the guess is NOT the magciword
+                                % so DO this WHILE the guess is NOT the magic word
     message = ['You''ve made ' num2str(guessesmade-1) ' guesses.'];
     % why do we have the double apostrophe?
     % if we just use ONE apostrophe, MATLAB will think that's the apostrophe
